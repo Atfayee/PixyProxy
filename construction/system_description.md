@@ -10,4 +10,4 @@ The API will be structured into four layers: database, service, core, and web.
 
 4. The web layer, located in the /web directory, will contain separate resources for managing public and private prompts. It will use a dependency pattern to ensure that private resource methods require authentication. It will also incorporate a dependency for universal logging of all requests.
 
-The API will support various functionalities through its endpoints. These include searching by guid and requesting all images with pagination constraints. All responses will be in JSON format. Users will also have access for images, image details or image bytes and adding images.
+The API will support various functionalities through its endpoints. These include searching by guid and requesting all images with pagination constraints. All responses will be in pydantic model or image bytes. Users will also have access for images, image details or image bytes and adding images.
