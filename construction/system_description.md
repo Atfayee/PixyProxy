@@ -1,13 +1,25 @@
-The task at hand is to design a REST API using Python's FastAPI framework. The API provides API endpoints for generating images from prompts, remembering the metadata and content of the generated images, listing image details, and returning image content. Each image will have a GUID for public identification, an integer ID for internal use, prompt, a filename, and timestamps.
+The task at hand is to design a REST API for PixyProxy, a Python FastAPI image generation service leveraging Large Language Model (LLM) technology. The API will facilitate the generation and management of images based on prompts.
+
+Each image generated will have a GUID for public identification, an integer ID for internal use, a prompt, a filename, and timestamps.
 
 The API will be structured into four layers: database, service, core, and web.
 
-1. The database layer, located in the /data directory, will use a repository pattern and MySQL. It will implement conversions between models and dictionaries for efficiency and use named parameters for SQL commands. The initialization logic will be contained in an init.py module.
+1. Database Layer: Located in the /data directory, this layer will utilize a repository pattern and MySQL database. It will implement conversions between image models and dictionaries for efficiency and utilize named parameters for SQL commands. The initialization logic will reside in an init.py module.
 
-2. The service layer, located in the /service directory, will handle requests for public and private prompts in separate modules. It will revalidate incoming models from the web layer using pydantic. All exceptions, whether they originate from the database or service layer, will be formatted as a PromptException.
+2. Service Layer: Located in the /service directory, this layer will handle requests for generating images from prompts and retrieving image details. It will validate incoming models from the web layer using pydantic. All exceptions, whether from the database or service layer, will be formatted as an ImageGenerationException.
 
-3. The core layer, located in the /core directory, will focus on models and exceptions, all of which will extend PromptException.
+3. Core Layer: Located in the /core directory, this layer will focus on image models and exceptions, all of which will extend ImageGenerationException.
 
-4. The web layer, located in the /web directory, will contain separate resources for managing public and private prompts. It will use a dependency pattern to ensure that private resource methods require authentication. It will also incorporate a dependency for universal logging of all requests.
+4. Web Layer: Located in the /web directory, this layer will contain resources for managing images through API endpoints. It will incorporate universal request logging and exception handling.
 
-The API will support various functionalities through its endpoints. These include searching by guid and requesting all images with pagination constraints. All responses will be in pydantic model or image bytes. Users will also have access for images, image details or image bytes and adding images.
+The API will support the following endpoints:
+
+    POST /image: Generate an image (and image detail) from a prompt. Return an ImageDetail model object that includes the prompt, filename, and GUID.
+
+    GET /image/guid: Retrieve image details for an image with the provided GUID. Return an ImageDetail model object that includes the prompt, filename, and GUID.
+
+    GET /image: Get image details for all images. Return a list of ImageDetail model objects that includes the prompt, filename, and GUID.
+
+    GET /image/guid/content: Retrieve the image file using the provided GUID. Return the image bytes in the body of the HTTP response.
+
+The API endpoints will handle both the generation and retrieval of images without requiring separate public and private sections.
