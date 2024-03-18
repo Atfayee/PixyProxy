@@ -1,12 +1,10 @@
-# Initialization logic for the database connection
-# Use python-dotenv to read configuration items
 from mysql.connector import pooling
-import os
 from dotenv import load_dotenv
+import os
 import threading
 
-# Load environment variables from .env file
 load_dotenv()
+
 
 # Database Configuration
 config = {
@@ -17,6 +15,7 @@ config = {
     'database': os.getenv('DB_NAME'),
     'raise_on_warnings': True,
 }
+
 
 # Create a thread-local storage
 local_storage = threading.local()
@@ -35,7 +34,7 @@ class DatabaseContext:
         # Store the context in thread-local storage
         local_storage.db_context = self
         return self
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
             if exc_type is not None:
@@ -49,7 +48,7 @@ class DatabaseContext:
     @property
     def cursor(self):
         return self._cursor
-        
+
     # Exposing transactional methods for use in service layer
     def begin_transaction(self):
         self.conn.start_transaction()
@@ -63,6 +62,7 @@ class DatabaseContext:
     @cursor.setter
     def cursor(self, value):
         self._cursor = value
+
 
 # Provide a global function to fetch the current context
 def get_current_db_context():

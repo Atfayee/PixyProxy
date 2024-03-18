@@ -2,15 +2,14 @@
 # Include methods for CRUD operations on the images table
 # Use DB-API to interact with MySQL backend
 from typing import List, Optional
-
 from fastapi import Response
-
 import core
 from core.models import ImageDetail, ImageDetailCreate
 from data import get_current_db_context
 
 class ImageRepositoryInterface:
-    def generate_image(self, prompt:ImageDetailCreate):
+
+    def generate_image(self, prompt:ImageDetailCreate)->ImageDetail:
         # Implementation of the generate-image use case
         pass
 
@@ -22,7 +21,7 @@ class ImageRepositoryInterface:
         # Implementation of the get-image use case
         pass
 
-    def get_iamge_content(self, guid:str)->str:
+    def get_iamge_content(self, guid:str)->bytes:
         # Implementation of the get-image-content use case
         pass
 
