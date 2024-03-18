@@ -4,13 +4,11 @@ Each image generated will have a GUID for public identification, an integer ID f
 
 The API will be structured into four layers: database, service, core, and web.
 
-1. Database Layer: Located in the /data directory, this layer will utilize a repository pattern and MySQL database. It will implement conversions between image models and dictionaries for efficiency and utilize named parameters for SQL commands. The initialization logic will reside in an init.py module.
+1. Database Layer: Located in the `/data` directory, this layer will utilize a repository pattern and MySQL database. It will implement conversions between image models and dictionaries for efficiency and utilize named parameters for SQL commands. The initialization logic will reside in an `init.py` module.
 
-2. Service Layer: Located in the /service directory, this layer will handle requests for generating images from prompts and retrieving image details. It will validate incoming models from the web layer using pydantic. All exceptions, whether from the database or service layer, will be formatted as an ImageGenerationException.
+2. Service Layer: Located in the `/service` directory, this layer will handle requests for generating images from prompts and retrieving image details. It will validate incoming models from the web layer using pydantic. All exceptions, whether from the database or service layer, will be formatted as an `ImageGenerationException`.
 
-3. Core Layer: Located in the /core directory, this layer will focus on image models and exceptions, all of which will extend ImageGenerationException.
-
-4. Web Layer: Located in the /web directory, this layer will contain resources for managing images through API endpoints. It will incorporate universal request logging and exception handling.
+3. Core Layer: Located in the `/core` directory, this layer will focus on image models and exceptions, all of which will extend `ImageGenerationException`.
 
 The API will support the following endpoints:
 
@@ -22,4 +20,7 @@ The API will support the following endpoints:
 
     GET /image/guid/content: Retrieve the image file using the provided GUID. Return the image bytes in the body of the HTTP response.
 
-The API endpoints will handle both the generation and retrieval of images without requiring separate public and private sections.
+The API will also implement universal request logging in the
+format `YYYY-MM-DD HH:min:sec,ms {{LoggingLevel}} {{request-id}} [thread-id] [method:line number] REQUEST START  (or REQUEST END)`.
+The request-id will be generated from the host-datetime-threadid. All exceptions will be handled by a single exception
+handler.

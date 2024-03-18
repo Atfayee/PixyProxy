@@ -3,30 +3,42 @@ Let's use the repository pattern with interfaces, models, and exceptions.
 
 The system description is as follows:
 
-`{system-description?}`
+```
+{system-description?}
+```
 
 Let's make sure to cover the following use cases for our system:
 
-`{system-usecase-summary?}`
+```
+{system-usecase-summary?}
+```
 
 Here are the database repository interfaces to use:
 
-`{database-repository-interfaces?}`
+```
+{database-repository-interfaces?}
+```
 
 Here are the core model objects to use:
 
-`{model-objects?}`
+```
+{model-objects?}
+```
 
 Here are the exceptions to use:
 
-`{exceptions?}`
+```
+{exceptions?}
+```
 
 The service layer is responsible for transaction management and business logic and validation.
 Create the service layer interface, then implement it.
 
 Assume we have the following DatabaseContext class:
 
-`{database-context?}`
+```
+{database-context?}
+```
 
 Let's generate:
 
@@ -41,24 +53,23 @@ Let's generate:
 * Include a sample .env file with any configuration items needed
 
 Make a XServiceInterface class and a XService class for each of the following:
-PromptService
-UserService
+ImageGenerationService
 
 The way we intend to use DatabaseContext is as follows:
-with DatabaseContext() as db:
-try:
-db.begin_transaction() # do some work
-
-db.commit_transaction() # return result
-
-except PromptException as known_exc:
-traceback.print_exc()
-db.rollback_transaction()
-raise known_exc
-except Exception as e:
-traceback.print_exc()
-db.rollback_transaction()
-raise PromptException("An unexpected error occurred while processing your request.") from e
+ with DatabaseContext() as db:
+            try:
+                db.begin_transaction()
+                # do some work
+                db.commit_transaction()
+                # return result
+            except PromptException as known_exc:
+                traceback.print_exc()
+                db.rollback_transaction()
+                raise known_exc
+            except Exception as e:
+                traceback.print_exc()
+                db.rollback_transaction()
+                raise PromptException("An unexpected error occurred while processing your request.") from e
 
 ```
 

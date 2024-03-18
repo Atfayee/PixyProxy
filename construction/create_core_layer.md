@@ -28,7 +28,7 @@ it takes to make X (named class XCreate), and a class for the data items we need
 ## core/exceptions.py
 
 Let's make sure to have a custom exception for each error condition that can occur in the system.
-Every exception should extend a class called PromptException that itself extends Exception.
+Every exception should extend a class called ImageGenerationException that itself extends Exception.
 
 For the data layer exceptions, let's generate:
 class DBConnectionError(PromptException):
@@ -41,11 +41,10 @@ class RecordNotFoundError(PromptException):
 
 Make sure the exceptions can be raised with a message.
 For example:
-class PromptException(Exception):
-def **init**(self, message: str):
-self.message = message
-super().**init**(self.message)
+    class ImageGenerationException(Exception):
+        def **init**(self, message: str):
+            self.message = message
+            super().**init**(self.message)
 
 class ConstraintViolationError
-
 - a database constraint was violated
