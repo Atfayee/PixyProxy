@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from core.models import ImageDetail
 
+
 # Load environment variables from a .env file
 load_dotenv()
 
