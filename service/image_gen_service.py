@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from core.exceptions import ImageGenerationException, ConstraintViolationError, DataValidationError
 from core.models import ImageDetail, ImageDetailCreate
 from data import DatabaseContext
-from data.repository import ImageRepositoryInterface
+from data.image_repository import ImageRepositoryInterface
 
 
 class ImageGenerationServiceInterface:
