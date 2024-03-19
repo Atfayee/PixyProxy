@@ -87,9 +87,10 @@ class ImageGenerationService(ImageGenerationServiceInterface):
         with DatabaseContext() as db:
             try:
                 db.begin_transaction()
-                guid = self.image_repository.generate_image(prompt)
+                # guid = self.image_repository.generate_image(prompt)
+                image = self.image_repository.generate_image(prompt)
                 db.commit_transaction()
-                return guid
+                return image.guid
             except ImageGenerationException as known_exc:
                 traceback.print_exc()
                 db.rollback_transaction()

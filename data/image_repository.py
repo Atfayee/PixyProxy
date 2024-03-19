@@ -30,12 +30,13 @@ class MySQLImageRepository(ImageRepositoryInterface):
     def generate_image(self, image: ImageDetailCreate):
         db = get_current_db_context()
         image_guid = core.make_guid()
+        # Generate filename based on the prompt
+        image_filename = image.prompt.replace(" ", "_") + ".jpg"
         db.cursor.execute(
             "INSERT INTO images (guid, filename, prompt) VALUES (%s, %s, %s)",
-            (image_guid, image.filename, image.prompt)
+            (image_guid, image_filename, image.prompt)
         )
-        result_dict = self.make_result_dict(image)
-        return ImageDetail(**result_dict)
+        return ImageDetail(prompt=image.prompt, guid=image_guid, filename=image_filename)
     
 
     def get_image(self, guid: str) -> ImageDetail:

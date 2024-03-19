@@ -8,7 +8,7 @@ from web.dependencies import get_image_service
 router = APIRouter()
 
 
-@router.post("/image/", status_code=201, summary="Generate a new image.")
+@router.post("/image/", status_code=200, summary="Generate a new image.")
 async def generate_image(prompt: ImageDetailCreate,
                          service: ImageGenerationServiceInterface = Depends(get_image_service)):
     return service.generate_image(prompt)

@@ -13,7 +13,7 @@ app = FastAPI()
 # Register routers
 
 # Include the router with a prefix
-app.include_router(router, prefix="/image")
+app.include_router(router)
 # Innermost first
 app.add_middleware(LoggingMiddleware)  # type: ignore
 app.add_middleware(RequestIdMiddleware)  # type: ignore
