@@ -11,7 +11,7 @@ from data.image_repository import ImageRepositoryInterface
 
 
 class ImageGenerationServiceInterface:
-    def generate_image(self, prompt: ImageDetailCreate) -> ImageDetail:
+    def created_image(self, prompt: ImageDetailCreate) -> ImageDetail:
         """
         Generate a new image in the database.
 
@@ -30,7 +30,7 @@ class ImageGenerationServiceInterface:
 
     
 
-    def get_image(self, guid: str) -> ImageDetail:
+    def get_image_by_guid(self, guid: str) -> ImageDetail:
         """
         Retrieves an image by its GUID.
 
@@ -47,7 +47,7 @@ class ImageGenerationServiceInterface:
         pass
     
 
-    def list_images(self) -> List[ImageDetail]:
+    def get_all_images(self) -> List[ImageDetail]:
         """
         Retrieves all images.
 
@@ -60,7 +60,7 @@ class ImageGenerationServiceInterface:
         pass
 
 
-    def get_iamge_content(self, guid:str)->bytes:
+    def get_image_content(self, guid:str)->bytes:
         """
         Retrieves an image content by its GUID.
 
@@ -78,7 +78,7 @@ class ImageGenerationService(ImageGenerationServiceInterface):
     def __init__(self, image_repository: ImageGenerationServiceInterface):
         self.image_repository = image_repository
 
-    def generate_image(self, prompt: ImageDetailCreate) -> ImageDetail:
+    def created_image(self, prompt: ImageDetailCreate) -> ImageDetail:
         try:
             prompt = ImageDetailCreate(**prompt.dict())
         except ValidationError as e:
@@ -88,9 +88,9 @@ class ImageGenerationService(ImageGenerationServiceInterface):
             try:
                 db.begin_transaction()
                 # guid = self.image_repository.generate_image(prompt)
-                image = self.image_repository.generate_image(prompt)
+                image = self.image_repository.created_image(prompt)
                 db.commit_transaction()
-                return image.guid
+                return image
             except ImageGenerationException as known_exc:
                 traceback.print_exc()
                 db.rollback_transaction()
@@ -101,10 +101,10 @@ class ImageGenerationService(ImageGenerationServiceInterface):
                 raise ImageGenerationException("An unexpected error occurred while processing your request.") from e
 
     
-    def get_image(self, guid:str)->ImageDetail:
+    def get_image_by_guid(self, guid:str)->ImageDetail:
         with DatabaseContext():
             try:
-                return self.image_repository.get_image(guid)
+                return self.image_repository.get_image_by_guid(guid)
             except ImageGenerationException as known_exc:
                 traceback.print_exc()
                 raise known_exc
@@ -113,15 +113,27 @@ class ImageGenerationService(ImageGenerationServiceInterface):
                 raise ImageGenerationException("An unexpected error occurred while processing your request.") from e
 
     
-    def list_images(self)->List[ImageDetail]:
+    def get_all_images(self)->List[ImageDetail]:
         with DatabaseContext():
             try:
-                return self.image_repository.list_images()
+                return self.image_repository.get_all_images()
             except ImageGenerationException as known_exc:
                 traceback.print_exc()
                 raise known_exc
             except Exception as e:
                 traceback.print_exc()
                 raise ImageGenerationException("An unexpected error occurred while processing your request.") from e
+            
+    def get_image_content(self, guid: str) -> bytes:
+        with DatabaseContext():
+            try:
+                return self.image_repository.get_image_content(guid)
+            except ImageGenerationException as known_exc:
+                traceback.print_exc()
+                raise known_exc
+            except Exception as e:
+                traceback.print_exc()
+                raise ImageGenerationException("An unexpected error occurred while processing your request.") from e
+
 
     

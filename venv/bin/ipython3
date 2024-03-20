@@ -1,0 +1,8 @@
+#!/home/atfayee/桌面/VirginiaTech/24spring/aitools4se/M6/PixyProxy/venv/bin/python
+# -*- coding: utf-8 -*-
+import re
+import sys
+from IPython import start_ipython
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(start_ipython())

@@ -52,8 +52,8 @@ class AuthenticationError(ImageGenerationException):
 EXCEPTION_STATUS_CODES = {
     DataValidationError: 400,       # Bad Request
     ConstraintViolationError: 409,  # Conflict
-    ImageGenerationException: 500,  # Internal Server Error (Generic fallback)
-    DBConnectionError: 500,         # Internal Server Error (Generic fallback)
+    ImageGenerationException: 502,  # Internal Server Error (Generic fallback)
+    DBConnectionError: 501,         # Internal Server Error (Generic fallback)
     RecordNotFoundError: 404,       # Not Found
     UnauthorizedError: 401,         # Unauthorized
     OperationNotAllowedError: 403,  # Forbidden

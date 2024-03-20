@@ -83,6 +83,7 @@ def test_create_image(http_client: httpx.Client, db_connection, created_image: I
 # and then checks if the retrieved image details match the created image.
 def test_get_image_by_guid(http_client: httpx.Client, created_image: ImageDetail):
     # Send GET request to retrieve image by GUID
+    print(created_image)
     response = http_client.get(f"/image/{created_image.guid}")
     assert response.status_code == 200
     retrieved_image_detail = ImageDetail(**response.json())
@@ -107,9 +108,9 @@ def test_get_all_images(http_client: httpx.Client, created_image: ImageDetail):
 def test_get_image_content(http_client: httpx.Client, created_image: ImageDetail):
     # Send GET request to retrieve image content
     response = http_client.get(f"/image/{created_image.guid}/content")
-
     assert response.status_code == 200
     assert response.headers['content-type'] == 'image/png'
+    # assert response.content == 'sada2'
     content_length = len(response.content)
 
     assert content_length > 5 * 1024  # Check that content is larger than 5KB
